@@ -60,13 +60,13 @@ main:
 .text
 gcd:
 loop:
-    beq $a1, $zero, esc
+    beq $a1, $zero, end_gcd
     move $t5,$a1 
     div $a0, $a1
-    mfhl $a1
+    mfhi $a1
     move $a0, $t5
     j loop
 
-esc:
+end_gcd:
     move $v0, $a0
     jr $ra
