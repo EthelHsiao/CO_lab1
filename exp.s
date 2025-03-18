@@ -36,7 +36,7 @@ main:
 
 
 # print the result of procedure factorial on the console interface
-	li 		$v0, 34				# call system call: print int
+	li 		$v0, 1				# call system call: print int
 	move 	$a0, $t0			# move value of integer into $a0
 	syscall 					# run the syscall
 
