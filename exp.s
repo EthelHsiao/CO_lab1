@@ -57,14 +57,16 @@ power:
 	beq 	$a1, $zero, base_case		# if n >= 1 go to L1
 	addi 	$sp, $sp, -4		# adiust stack for 2 items
 	sw 		$ra, 4($sp)			# save the return address
-	#sw 		$a1, 0($sp)			# save the argument n
+	sw 		$a1, 0($sp)			# save the argument n
 
 	addi 	$a1, $a1, -1		# return 1
     jal 	power			# call factorial with (n-1)
     		
-    lw   $ra, 0($sp) 
-    mul 	$v0, $a0, $v0
-	addi 	$sp, $sp, 4			# pop 2 items off stack
+    lw   $a1, 0($sp)   
+    lw   $ra, 4($sp)   
+    
+	addi 	$sp, $sp, 8		# pop 2 items off stack
+    mul 	$v0, $v0, $a0
 
 	jr 		$ra					# return to caller
 base_case:		
