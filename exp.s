@@ -55,7 +55,7 @@ main:
 power:	
 
 	beq 	$a1, $zero, base_case		# if n >= 1 go to L1
-	addi 	$sp, $sp, -4		# adiust stack for 2 items
+	addi 	$sp, $sp, -8		# adiust stack for 2 items
 	sw 		$ra, 4($sp)			# save the return address
 	sw 		$a1, 0($sp)			# save the argument n
 
