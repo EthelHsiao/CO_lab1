@@ -1,7 +1,7 @@
 .data
 	input_msg1:	.asciiz "Please enter the first number: "
     input_msg2: .asciiz "Please enter the second number: "
-
+    newline: 	.asciiz "\n"
 
 .text
 .globl main
@@ -51,6 +51,11 @@ main:
     move    $a0, $t4				# call system call: exit
 	syscall						# run the syscall
 
+# print a newline at the end
+	li		$v0, 4				# call system call: print string
+	la		$a0, newline		# load address of string into $a0
+	syscall						# run the syscall
+    
 # exit the program
 	li 		$v0, 10				# call system call: exit
 	syscall						# run the syscall
