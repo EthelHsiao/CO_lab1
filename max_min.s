@@ -20,7 +20,7 @@ main:
     syscall              
     
 
-    li   $t0, $zero             
+    li   $t0, 0             
     
 input_loop:
     beq  $t0, 5, end_input  
