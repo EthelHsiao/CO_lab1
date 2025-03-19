@@ -1,3 +1,39 @@
+# Student ID: [Your Student ID here]
+
+.data
+prompt: .asciiz "Enter an integer: "
+newline: .asciiz "\n"
+
+.text
+.globl main
+
+# sumOfDigits(int n)
+sumOfDigits:
+    # Initialize sum to 0
+    li $v0, 0
+    
+sum_loop:
+    # Check if n <= 0
+    ble $a0, $zero, sum_done
+    
+    # Get last digit: n % 10
+    li $t0, 10
+    div $a0, $t0
+    mfhi $t1            # $t1 = n % 10
+    
+    # Add digit to sum
+    add $v0, $v0, $t1
+    
+    # Remove last digit: n /= 10
+    div $a0, $t0
+    mflo $a0            # $a0 = n / 10
+    
+    # Continue loop
+    j sum_loop
+
+sum_done:
+    # Return sum
+    jr $ra
 
 main:
     # Print prompt
@@ -5,53 +41,17 @@ main:
     la $a0, prompt
     syscall
     
-    # Read five integers
-    la $s0, array       # $s0 = address of array
-    li $s1, 5           # $s1 = size of array
-    li $s2, 0           # $s2 = counter
-    
-read_loop:
-    # Check if we've read all numbers
-    beq $s2, $s1, read_done
-    
     # Read integer
     li $v0, 5
     syscall
+    move $s0, $v0       # Store input in $s0
     
-    # Store in array
-    sll $t0, $s2, 2     # $t0 = counter * 4
-    add $t0, $s0, $t0   # $t0 = &array[counter]
-    sw $v0, 0($t0)      # array[counter] = input
+    # Call sumOfDigits
+    move $a0, $s0       # Set argument
+    jal sumOfDigits     # Call function
     
-    # Increment counter
-    addi $s2, $s2, 1
-    j read_loop
-    
-read_done:
-    # Allocate space for max and min
-    addi $sp, $sp, -8   # Allocate 8 bytes on stack
-    move $s2, $sp       # $s2 = address of max
-    addi $s3, $sp, 4    # $s3 = address of min
-    
-    # Call findMaxMin
-    move $a0, $s0       # $a0 = array address
-    move $a1, $s1       # $a1 = size
-    move $a2, $s2       # $a2 = address of max
-    move $a3, $s3       # $a3 = address of min
-    jal findMaxMin
-    
-    # Print max
-    lw $a0, 0($s2)      # $a0 = max
-    li $v0, 1           # Print integer
-    syscall
-    
-    # Print space
-    li $v0, 4
-    la $a0, space
-    syscall
-    
-    # Print min
-    lw $a0, 0($s3)      # $a0 = min
+    # Print result
+    move $a0, $v0       # Move result to $a0 for printing
     li $v0, 1           # Print integer
     syscall
     
@@ -59,9 +59,6 @@ read_done:
     li $v0, 4
     la $a0, newline
     syscall
-    
-    # Deallocate stack space
-    addi $sp, $sp, 8
     
     # Exit program
     li $v0, 10
